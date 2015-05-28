@@ -3,6 +3,8 @@
 Yet another typewriter simulator. This one supports `span`s though for syntax highlighting.<br>
 **[Demo →](http://ricostacruz.com/typish)**
 
+![](https://github.com/rstacruz/typish/blob/gh-pages/screencast.gif)
+
 ```js
 var typish = require('typish');
 
