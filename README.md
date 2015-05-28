@@ -1,6 +1,7 @@
 # typish
 
-Yet another typer. This one supports `span`s though for syntax highlighting.
+Yet another typewriter simulator. This one supports `span`s though for syntax highlighting.<br>
+**[Demo →](http://jsbin.com/qoranoyuwe/edit?js,output)**
 
 ```js
 var typish = require('typish');
