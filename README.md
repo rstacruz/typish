@@ -25,6 +25,9 @@ function repeat() {
 repeat();
 ```
 
+[![Status](http://img.shields.io/travis/rstacruz/typish/master.svg)](https://travis-ci.org/rstacruz/typish "See test builds")
+[![npm version](http://img.shields.io/npm/v/typish)](https://npmjs.org/package/typish "View this project on npm")
+
 ## API cheatsheet
 
 ```js
@@ -160,3 +163,25 @@ typish(el)
 ```
 
 <!-- /include -->
+
+## Similar projects
+
+* [jquery.typer.js](https://github.com/layervault/jquery.typer.js)
+    * pro: easier to configure
+    * con: jQuery dependency
+    * con: doesn't support spans
+* [malarkey](https://github.com/yuanqing/malarkey)
+    * pro: smaller footprint in bytes
+    * con: doesn't support spans
+
+## Thanks
+
+**typish** ¬© 2015+, Rico Sta. Cruz. Released under the [MIT] License.<br>
+Authored and maintained by Rico Sta. Cruz with help from contributors ([list][contributors]).
+
+> [ricostacruz.com](http://ricostacruz.com) &nbsp;&middot;&nbsp;
+> GitHub [@rstacruz](https://github.com/rstacruz) &nbsp;&middot;&nbsp;
+> Twitter [@rstacruz](https://twitter.com/rstacruz)
+
+[MIT]: http://mit-license.org/
+[contributors]: http://github.com/rstacruz/typish/contributors
