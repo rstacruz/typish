@@ -24,7 +24,7 @@ html, body {
   color: #888;
 
   line-height: 1.5;
-  height: 7.5em;
+  height: 10em;
 }
 
 @media (min-width: 768px) {
@@ -43,9 +43,15 @@ html, body {
 
   position: relative;
   top: 1px;
+}
 
-  -webkit-animation: blink 1000ms linear infinite;
-  animation: blink 1000ms linear infinite;
+#container.-typish-waiting:after {
+  -webkit-animation: blink 500ms linear infinite;
+  animation: blink 500ms linear infinite;
+}
+
+#container.-nocursor:after {
+  display: none;
 }
 
 @-webkit-keyframes blink {
@@ -76,6 +82,22 @@ html, body {
 .comment {
   color: #888;
 }
+
+.btn {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  text-decoration: none;
+  font-weight: bold;
+
+  font-family: sans-serif;
+
+  background: dodgerblue;
+  color: white;
+
+  margin-top: 15px;
+}
 </style>
 
 <div id='container'></div>
@@ -90,9 +112,9 @@ html, body {
 <script>
 function repeat() {
   typish('#container')
-    .speed(70)
+    .speed(40)
     .type('/* welcome to typish.js. */', 'comment')
-    .wait(10)
+    .wait(20)
     .type('\n\n')
     .type('var x ', 'keyword')
     .type('= ', 'operator')
@@ -106,6 +128,11 @@ function repeat() {
     .type('mundo."', 'string')
     .type(');\n};', 'operator')
     .wait(30)
+    .type('\n')
+    .then(function () { this.el.className += '-nocursor'; })
+    .type('View on GitHub', '<a class="btn" href="https://github.com/rstacruz/typish">', 0)
+    .wait(200)
+    .then(function () { this.el.className.replace(/-nocursor/, '') })
     .then(repeat);
 }
 

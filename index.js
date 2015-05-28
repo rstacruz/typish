@@ -39,7 +39,7 @@
     this.classNames = {
       typing: '-typish-typing',
       waiting: '-typish-waiting'
-    }
+    };
 
     this.clearAllSync();
   }
@@ -64,12 +64,18 @@
    */
 
   typish.prototype.type = function (str, className, speed) {
-    var letters = str.split('');
-
     if (typeof className === 'number') {
       speed = className;
       className = undefined;
     }
+
+    var letters;
+
+    // optimize: if speed is 0, do it all in one go
+    if (speed === 0)
+      letters = [str];
+    else
+      letters = str.split('');
 
     for (var i = 0, len = letters.length; i < len; i++) {
       var letter = letters[i];
@@ -198,9 +204,10 @@
    */
 
   typish.prototype.speed = function (n) {
-    if (typeof n === 'undefined') return this._speed;
-    this._speed = n;
-    return this;
+    return this.then(function () {
+      this._speed = n;
+      return this;
+    });
   };
 
   /**
@@ -255,7 +262,8 @@
     else
       speed = this._speed;
 
-    setTimeout(next, speed);
+    var self = this;
+    setTimeout(function() { next.call(self); }, speed);
     return this;
   };
 
