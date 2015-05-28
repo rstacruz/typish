@@ -31,6 +31,7 @@ typish(element)
   .speed(50)         // sets base speed in milliseconds
   .type("hi")        // types something letter by letter
   .type("hi", "red") // types, with classname set to 'red'
+  .type("hi", "<b>") // types, uses a custom tag
   .type("hi", 0)     // types immediately
   .del()             // delete 1 character
   .del(4)            // delete 4 characters
