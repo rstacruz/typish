@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>typish.js demo</title>
+</head>
+<body>
+<style>
+html, body {
+  background: #fafafa;
+  padding: 20px;
+}
+
+#container {
+  white-space: pre-wrap;
+  
+  background: white;
+  padding: 40px;
+  max-width: 500px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  margin: 0 auto;
+  font-family: monaco, monospace;
+  font-size: 10pt;
+  color: #888;
+
+  line-height: 1.5;
+  height: 10em;
+}
+
+@media (min-width: 768px) {
+  #container {
+    margin-top: 200px;
+  }
+}
+
+#container:after {
+  content: '';
+  display: inline-block;
+  height: 18px;
+  width: 3px;
+  background: #e74c3c;
+  margin-left: 5px;
+
+  position: relative;
+  top: 1px;
+}
+
+#container.-typish-waiting:after {
+  -webkit-animation: blink 500ms linear infinite;
+  animation: blink 500ms linear infinite;
+}
+
+#container.-nocursor:after {
+  display: none;
+}
+
+@-webkit-keyframes blink {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  40% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@keyframes blink {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  40% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.keyword { color: #111; }
+.operator { color: #2980b9; }
+.string { color: #16a085; }
+
+.share {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.comment {
+  color: #888;
+}
+
+.btn {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  text-decoration: none;
+  font-weight: bold;
+
+  font-family: sans-serif;
+
+  background: dodgerblue;
+  color: white;
+
+  margin-top: 15px;
+}
+</style>
+
+<div id='container'></div>
+
+
+<div class='share'>
+  <iframe src="http://ghbtns.com/github-btn.html?user=rstacruz&repo=typish&type=watch&count=true"
+      allowtransparency="true" frameborder="0" scrolling="0" width="100" height="20"></iframe>
+</div>
+
+<script src='http://cdn.rawgit.com/rstacruz/typish/v0.2.0/index.js'></script>
+<script>
+function repeat() {
+  typish('#container')
+    .speed(40)
+    .type('/* welcome to typish.js. */', 'comment')
+    .wait(20)
+    .type('\n\n')
+    .type('var x ', 'keyword')
+    .type('= ', 'operator')
+    .type('function')
+    .type('() {\n', 'operator')
+    .type('  alert')
+    .type('(', 'operator')
+    .type('"hello world', 'string')
+    .wait(10)
+    .del(5)
+    .type('mundo."', 'string')
+    .type(');\n};', 'operator')
+    .wait(30)
+    .type('\n')
+    .then(function () { this.el.className += '-nocursor'; })
+    .type('View on GitHub', '<a class="btn" href="https://github.com/rstacruz/typish">', 0)
+    .wait(200)
+    .then(function () { this.el.className.replace(/-nocursor/, '') })
+    .then(repeat);
+}
+
+repeat();
+</script>
