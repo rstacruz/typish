@@ -1,7 +1,14 @@
 {
   "name": "typish",
-  "version": "0.0.1",
-  "description": "",
+  "version": "0.1.0",
+  "description": "Typewriter simulator",
+  "keywords": [
+    "typewriter",
+    "type",
+    "anmiate",
+    "text",
+    "terminal"
+  ],
   "main": "index.js",
   "scripts": {
     "test": "mocha",
