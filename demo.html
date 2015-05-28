@@ -132,7 +132,7 @@ function repeat() {
     .then(function () { this.el.className += '-nocursor'; })
     .type('View on GitHub', '<a class="btn" href="https://github.com/rstacruz/typish">', 0)
     .wait(200)
-    .then(function () { this.el.className.replace(/-nocursor/, '') })
+    .then(function () { this.el.className = this.el.className.replace(/-nocursor/, '') })
     .then(repeat);
 }
 

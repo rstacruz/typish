@@ -60,9 +60,9 @@ typish(el)
 ```
 
 ### type()
-> `type(text, [className, speed])`
+> `type(text, [element, speed])`
 
-Types some text. If `className` is given, it'll start a new span.
+Types some text. If `element` is given, it'll start a new span.
 You can also give a different `speed` to make it faster or slower.
 
 ```js
@@ -71,6 +71,13 @@ typish(el)
   .type('hello', 'keyword')
   .type('hello', 10)
   .type('hello', 'keyword', 10)
+```
+
+The parameter `element` can be a classname or an HTML tag.
+
+```js
+typish('#box')
+  .type('download me', '<a href="download.html">')
 ```
 
 ### del()
