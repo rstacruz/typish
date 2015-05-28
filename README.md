@@ -180,7 +180,7 @@ typish(el)
 
 ## Thanks
 
-**typish** ¬© 2015+, Rico Sta. Cruz. Released under the [MIT] License.<br>
+**typish** © 2015+, Rico Sta. Cruz. Released under the [MIT] License.<br>
 Authored and maintained by Rico Sta. Cruz with help from contributors ([list][contributors]).
 
 > [ricostacruz.com](http://ricostacruz.com) &nbsp;&middot;&nbsp;
