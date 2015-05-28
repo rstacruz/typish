@@ -243,4 +243,14 @@ describe('typish', function () {
         next()
       })
   })
+
+  it('type() fast', function (next) {
+    t = typish(div)
+      .type('get', 0)
+      .then(function () {
+        expect(t.el.innerHTML).eql('<span>get</span>')
+        expect(t.iterations).eql(1)
+        next()
+      })
+  })
 })

@@ -69,7 +69,7 @@
       className = undefined;
     }
 
-    var letters;
+    var letters, self = this;
 
     // optimize: if speed is 0, do it all in one go
     if (speed === 0)
@@ -80,21 +80,21 @@
     for (var i = 0, len = letters.length; i < len; i++) {
       var letter = letters[i];
       (function (letter, i) {
-        this.queue(function (next) {
+        self.queue(function (next) {
           if (i === 0) {
-            addClass(this.el, this.classNames.typing);
-            this.spanSync(className);
+            addClass(self.el, self.classNames.typing);
+            self.spanSync(className);
           }
 
-          this.typeSync(letter);
+          self.typeSync(letter);
 
           if (i === len-1) {
-            removeClass(this.el, this.classNames.typing);
+            removeClass(self.el, self.classNames.typing);
           }
 
-          this.defer(next, speed);
+          self.defer(next, speed);
         });
-      }.bind(this)(letter, i));
+      }(letter, i));
     }
 
     return this;
