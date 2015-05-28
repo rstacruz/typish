@@ -27,7 +27,7 @@ repeat();
 ```
 
 [![Status](http://img.shields.io/travis/rstacruz/typish/master.svg)](https://travis-ci.org/rstacruz/typish "See test builds")
-[![npm version](http://img.shields.io/npm/v/typish)](https://npmjs.org/package/typish "View this project on npm")
+[![npm version](http://img.shields.io/npm/v/typish.svg)](https://npmjs.org/package/typish "View this project on npm")
 
 ## API cheatsheet
 
