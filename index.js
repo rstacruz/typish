@@ -7,12 +7,23 @@
     root.typish = factory();
   }
 }(this, function () {
+
+  /**
+   * Typish.
+   *
+   *   typish('#container')
+   *   typish(el)
+   */
+
   function typish(el, options) {
     if (!(this instanceof typish))
       return new typish(el, options);
     
     if (typeof el === 'string')
       el = document.querySelector(el);
+
+    if (el[0] && el[0].nodeName)
+      el = el[0];
     
     if (!el)
       throw new Error("Unknown element");
@@ -23,41 +34,53 @@
     this._speed = typish.defaultSpeed;
     this.length = 0;
     this.iterations = 0;
+
+    this.clearAllSync();
   }
 
   typish.defaultSpeed = 50;
 
   /**
-   * types some text.
+   * Types some text. If `className` is given, it'll start a new span.
+   * You can also give a different `speed` to make it faster or slower.
    *
    *   typish(el)
    *     .type('hello')
+   *     .type('hello', 'keyword')
+   *     .type('hello', 10)
+   *     .type('hello', 'keyword', 10)
    */
 
   typish.prototype.type = function (str, className, speed) {
     var letters = str.split('');
 
-    if (className)
-      this.queue(function (next) {
-        this.spanSync(className);
-        next();
-      });
+    if (typeof className === 'number') {
+      speed = className;
+      className = undefined;
+    }
 
     for (var i = 0, len = letters.length; i < len; i++) {
       var letter = letters[i];
-      (function (letter) {
+      (function (letter, i) {
         this.queue(function (next) {
+          if (i === 0) this.spanSync(className);
           this.typeSync(letter);
           this.defer(next, speed);
         });
-      }.bind(this)(letter));
+      }.bind(this)(letter, i));
     }
 
     return this;
   }
 
   /**
-   * queues a command for execution.
+   * Queues a command for execution.
+   *
+   *   typish(el)
+   *     queue(function (next) {
+   *       this.typeSync('hi');
+   *       setTimeout(next, 100);
+   *     })
    */
 
   typish.prototype.queue = function (fn) {
@@ -83,7 +106,7 @@
   };
 
   /**
-   * Waits for `speed` ms, then runs `next`. Useful inside queue.
+   * Waits for `speed` ms, then runs `next`. Useful inside queue().
    *
    *   typish(el)
    *     .queue(function (next) {
@@ -104,7 +127,7 @@
   };
 
   /**
-   * sets the base speed.
+   * Sets the base speed.
    *
    *   typish(el)
    *     .speed(50)
@@ -118,7 +141,14 @@
   }
 
   /*
-   * executes something asynchronously.
+   * Executes something asynchronously.
+   *
+   *   typish('#box')
+   *     .type('hello')
+   *     .then(popupSomething)
+   *     .wait()
+   *     .type('there')
+   *     .then(popupSomethingAgain)
    */
 
   typish.prototype.then = function (fn) {
@@ -129,7 +159,7 @@
   };
 
   /**
-   * waits.
+   * Waits a while. You may give an optional `speed` argument.
    *
    *   typish(el)
    *     .type('hello')
@@ -144,8 +174,13 @@
   };
 
   /**
-   * deletes characters. if `n` is given, it'll delete that many characters.
+   * Deletes characters. if `n` is given, it'll delete that many characters.
    * If `speed` is given, that's the speed it'll run on.
+   *
+   *   typish('.box')
+   *     .type('hello John')
+   *     .del(4)
+   *     .type('Sherlock')
    */
 
   typish.prototype.del = function (n, speed) {
@@ -162,7 +197,12 @@
   };
 
   /**
-   * clears the entire thing.
+   * Clears the entire thing one letter at a time. To clear everything
+   * instantly, use `.clear(0)`.
+   *
+   *   typish('.box')
+   *     .type('hello.')
+   *     .clear()
    */
 
   typish.prototype.clear = function (speed) {
@@ -170,7 +210,7 @@
 
     if (speed === 0) {
       return this.queue(function (next) {
-        this.el.innerHTML = '';
+        this.clearAllSync();
         next();
       });
     }
@@ -186,7 +226,7 @@
   };
 
   /**
-   * adds a span (synchronous)
+   * Internal: Adds a span (synchronous).
    */
 
   typish.prototype.spanSync = function (className) {
@@ -200,7 +240,7 @@
   };
 
   /**
-   * adds a character (synchronous)
+   * Internal: Adds a character (synchronous).
    */
 
   typish.prototype.typeSync = function (ch, className) {
@@ -210,13 +250,20 @@
       this.spanSync(); 
     }
 
-    this.last.innerHTML += ch;
     this.length += ch.length;
+
+    ch = ch
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/\n/g, '<br>');
+
+    this.last.innerHTML += ch;
     return this;
   };
 
   /*
-   * deletes a character (synchronous)
+   * Internal: deletes a character (synchronous).
    */
 
   typish.prototype.delSync = function () {
@@ -234,7 +281,7 @@
   };
 
   /**
-   * Internal: removes the last span (synchronous)
+   * Internal: removes the last span (synchronous).
    */
 
   typish.prototype.popSpanSync = function () {
@@ -247,6 +294,15 @@
       this.last = undefined;
 
     return this;
+  };
+
+  /**
+   * Internal: clears everything (synchronous).
+   */
+
+  typish.prototype.clearAllSync = function () {
+    this.el.innerHTML = '';
+    this.length = 0;
   };
 
   return typish;

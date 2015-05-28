@@ -21,6 +21,30 @@ describe('typish', function () {
       '<span class="keyword">var x</span>')
   })
 
+  it('typeSync() auto span insertion', function () {
+    t = typish(div)
+      .typeSync('var x')
+
+    expect(t.el.innerHTML).eql(
+      '<span>var x</span>')
+  })
+
+  it('typeSync() escaping', function () {
+    t = typish(div)
+      .typeSync('var <x>')
+
+    expect(t.el.innerHTML).eql(
+      '<span>var &lt;x&gt;</span>')
+  })
+
+  it('typeSync() line breaks', function () {
+    t = typish(div)
+      .typeSync('a\nb')
+
+    expect(t.el.innerHTML).eql('<span>a<br>b</span>')
+    expect(t.length).eql(3)
+  })
+
   it('delSync() once', function () {
     t = typish(div)
       .spanSync('keyword')
@@ -95,7 +119,7 @@ describe('typish', function () {
       })
       .type('yo')
       .then(function () {
-        expect(t.el.innerHTML).eql('<span>hiyo</span>')
+        expect(t.el.innerHTML).eql('<span>hi</span><span>yo</span>')
         next()
       })
   })
