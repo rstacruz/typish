@@ -8,49 +8,64 @@ describe('typish', function () {
   beforeEach(function () {
     typish = require('../index')
     div = document.createElement('div')
+    t = undefined
   })
 
-  it('works', function () {
+  it('typeSync()', function () {
     t = typish(div)
-      .span('keyword')
-      .char('var x')
+      .spanSync('keyword')
+      .typeSync('var x')
 
     expect(t.el.innerHTML).eql(
       '<span class="keyword">var x</span>')
   })
 
-  it('bksp once', function () {
+  it('delSync() once', function () {
     t = typish(div)
-      .span('keyword')
-      .char('var x')
-      .bksp()
-      .bksp()
+      .spanSync('keyword')
+      .typeSync('var x')
+      .delSync()
+      .delSync()
 
     expect(t.el.innerHTML).eql(
       '<span class="keyword">var</span>')
   })
 
+  it('delSync() then type after', function () {
+    t = typish(div)
+      .typeSync('v')
+      .delSync()
+
+    expect(t.el.innerHTML).eql('');
+    expect(t.last).undefined;
+
+    t.typeSync('k')
+
+    expect(t.el.innerHTML).eql(
+      '<span>k</span>')
+  })
+
   it('multiple span', function () {
     t = typish(div)
-      .span('keyword')
-      .char('var x')
-      .span('op')
-      .char('= y')
+      .spanSync('keyword')
+      .typeSync('var x')
+      .spanSync('op')
+      .typeSync('= y')
 
     expect(t.el.innerHTML).eql(
       '<span class="keyword">var x</span><span class="op">= y</span>')
   })
 
-  it('bksp multiple', function () {
+  it('del multiple', function () {
     t = typish(div)
-      .span('keyword')
-      .char('var x')
-      .span('keyword')
-      .char('=y')
-      .bksp()
-      .bksp()
-      .bksp()
-      .bksp()
+      .spanSync('keyword')
+      .typeSync('var x')
+      .spanSync('keyword')
+      .typeSync('=y')
+      .delSync()
+      .delSync()
+      .delSync()
+      .delSync()
 
     expect(t.el.innerHTML).eql(
       '<span class="keyword">var</span>')
@@ -58,16 +73,108 @@ describe('typish', function () {
 
   it('char without span', function () {
     t = typish(div)
-      .char('var x')
+      .typeSync('var x')
 
     expect(t.el.innerHTML).eql(
       '<span>var x</span>')
   })
 
-  it('last bksp throws no errors', function () {
+  it('last del throws no errors', function () {
     t = typish(div)
-      .bksp()
+      .delSync()
 
     expect(t.el.innerHTML).eql('')
+  })
+
+  it('type()', function (next) {
+    t = typish(div)
+      .type('hi')
+      .then(function () {
+        expect(t.el.innerHTML).eql('<span>hi</span>')
+      })
+      .type('yo')
+      .then(function () {
+        expect(t.el.innerHTML).eql('<span>hiyo</span>')
+        next()
+      })
+  })
+
+  it('type() with class', function (next) {
+    t = typish(div)
+      .type('hi')
+      .then(function () {
+        expect(t.el.innerHTML).eql('<span>hi</span>')
+      })
+      .type('yo', 'keyword')
+      .then(function () {
+        expect(t.el.innerHTML).eql('<span>hi</span><span class="keyword">yo</span>')
+        next();
+      });
+  })
+
+  it('del()', function (next) {
+    t = typish(div)
+      .type('var')
+      .type('=')
+      .del(2)
+      .then(function () {
+        expect(t.el.innerHTML).eql('<span>va</span>')
+        expect(t.iterations).eql(6);
+        next();
+      });
+  })
+
+  it('length', function () {
+    t = typish(div)
+      .typeSync('var')
+      .spanSync()
+      .typeSync('=')
+
+    expect(t.len()).eql(4);
+  })
+
+  it('clear()', function (next) {
+    t = typish(div)
+      .type('var')
+      .type('=')
+      .clear()
+      .then(function () {
+        expect(t.el.innerHTML).eql('');
+        next();
+      });
+  })
+
+  it('clear() and type after', function (next) {
+    t = typish(div)
+      .type('var')
+      .type('=')
+      .clear()
+      .type('k')
+      .then(function () {
+        expect(t.el.innerHTML).eql('<span>k</span>');
+        next();
+      });
+  })
+
+  it('clear() with speed = 0', function (next) {
+    t = typish(div)
+
+    t.spanSync()
+      .typeSync('var')
+      .typeSync('=')
+      .clear(0)
+      .then(function () {
+        expect(t.el.innerHTML).eql('');
+        next();
+      });
+  })
+
+  it('speed()', function (next) {
+    t = typish(div)
+      .speed(0)
+      .type('var')
+      .then(function () {
+        next();
+      });
   })
 })
