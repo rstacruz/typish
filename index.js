@@ -20,9 +20,12 @@
     this.el = el;
     this.stack = [];
     this.last = null;
-    this._speed = 10;
+    this._speed = typish.defaultSpeed;
+    this.length = 0;
     this.iterations = 0;
   }
+
+  typish.defaultSpeed = 50;
 
   /**
    * types some text.
@@ -159,17 +162,6 @@
   };
 
   /**
-   * returns the current length (synchronous)
-   */
-
-  typish.prototype.len = function (n, speed) {
-    if ('textContent' in this.el)
-      return this.el.textContent.length;
-    else
-      return this.el.innerText.length;
-  };
-
-  /**
    * clears the entire thing.
    */
 
@@ -185,7 +177,7 @@
 
     return this.queue(function (next) {
       function bksp() {
-        if (self.len() === 0) return next();
+        if (self.length === 0) return next();
         self.delSync();
         self.defer(bksp);
       }
@@ -219,6 +211,7 @@
     }
 
     this.last.innerHTML += ch;
+    this.length += ch.length;
     return this;
   };
 
@@ -228,6 +221,8 @@
 
   typish.prototype.delSync = function () {
     if (!this.last) return this;
+
+    this.length--;
 
     var str = this.last.innerHTML;
     if (str.length === 1) return this.popSpanSync();

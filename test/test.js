@@ -7,6 +7,7 @@ describe('typish', function () {
 
   beforeEach(function () {
     typish = require('../index')
+    typish.defaultSpeed = 1
     div = document.createElement('div')
     t = undefined
   })
@@ -130,7 +131,7 @@ describe('typish', function () {
       .spanSync()
       .typeSync('=')
 
-    expect(t.len()).eql(4);
+    expect(t.length).eql(4);
   })
 
   it('clear()', function (next) {
