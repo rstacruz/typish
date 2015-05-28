@@ -202,4 +202,22 @@ describe('typish', function () {
         next();
       });
   })
+
+  it('type() html tags', function (next) {
+    t = typish(div)
+      .type('get', '<a href="download.html">')
+      .then(function () {
+        expect(t.el.innerHTML).to.eql('<a href="download.html">get</a>')
+        next()
+      })
+  })
+
+  it('type() invalid html tags', function (next) {
+    t = typish(div)
+      .type('get', '<')
+      .then(function () {
+        expect(t.el.innerHTML).to.eql('<span>get</span>')
+        next()
+      })
+  })
 })

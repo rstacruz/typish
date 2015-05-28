@@ -43,8 +43,8 @@
   typish.defaultSpeed = 50;
 
   /**
-   * type() : type(text, [className, speed])
-   * Types some text. If `className` is given, it'll start a new span.
+   * type() : type(text, [element, speed])
+   * Types some text. If `element` is given, it'll start a new span.
    * You can also give a different `speed` to make it faster or slower.
    *
    *     typish(el)
@@ -52,6 +52,11 @@
    *       .type('hello', 'keyword')
    *       .type('hello', 10)
    *       .type('hello', 'keyword', 10)
+   *
+   * The parameter `element` can be a classname or an HTML tag.
+   *
+   *     typish('#box')
+   *       .type('download me', '<a href="download.html">')
    */
 
   typish.prototype.type = function (str, className, speed) {
@@ -241,11 +246,20 @@
    * Internal: Adds a span (synchronous).
    */
 
-  typish.prototype.spanSync = function (className) {
-    var span = document.createElement('span');
-    if (className)
-      span.className = className.replace(/\./, ' ');
-    
+  typish.prototype.spanSync = function (element) {
+    var span;
+
+    if (element && element.substr(0,1) === '<') {
+      var div = document.createElement('div');
+      div.innerHTML = element;
+      span = div.children[0];
+      if (!span) span = document.createElement('span');
+    } else {
+      span = document.createElement('span');
+      if (element)
+        span.className = element.replace(/\./, ' ');
+    }
+
     this.el.appendChild(span);
     this.last = span;
     return this;
