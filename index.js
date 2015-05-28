@@ -11,7 +11,7 @@
   /***
    * typish() : typish(element)
    * Starts typish. `element` may be a DOM element, selector, or a jQuery
-   * object.
+   * object. This returns a `typish` object that you can run methods on.
    *
    *     typish('#container')
    *     typish(el)
@@ -57,16 +57,39 @@
    *       .type('hello', 10)
    *       .type('hello', 'keyword', 10)
    *
-   * The parameter `element` can be a classname or an HTML tag.
+   * When a name is passed to the `element` parameter, it'll be used
+   * as a class name for a `<span>`.
+   *
+   *     typish(el)
+   *       .type('Jack', 'name')
+   *
+   *     <div id='box'><span class='name'>Jack</span></div>
+   *
+   * Each `.type()` call creates a new span element.
+   *
+   *     typish(el)
+   *       .type('Jack ', 'name')
+   *       .type('Sparrow', 'last')
+   *
+   *     <div id='box'>
+   *       <span class='name'>Jack </span>
+   *       <span class='last'>Sparrow</span>
+   *     </div>
+   *
+   * The parameter `element` can also be an HTML tag.
    *
    *     typish('#box')
    *       .type('download me', '<a href="download.html">')
+   *
+   *     <div id='box'>
+   *       <a href="download.html">download me</a>
+   *     </div>
    */
 
-  typish.prototype.type = function (str, className, speed) {
-    if (typeof className === 'number') {
-      speed = className;
-      className = undefined;
+  typish.prototype.type = function (str, element, speed) {
+    if (typeof element === 'number') {
+      speed = element;
+      element = undefined;
     }
 
     var letters, self = this;
@@ -83,7 +106,7 @@
         self.queue(function (next) {
           if (i === 0) {
             addClass(self.el, self.classNames.typing);
-            self.spanSync(className);
+            self.spanSync(element);
           }
 
           self.typeSync(letter);

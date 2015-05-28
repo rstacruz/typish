@@ -48,7 +48,7 @@ typish(element)
 > `typish(element)`
 
 Starts typish. `element` may be a DOM element, selector, or a jQuery
-object.
+object. This returns a `typish` object that you can run methods on.
 
 ```js
 typish('#container')
@@ -69,11 +69,38 @@ typish(el)
   .type('hello', 'keyword', 10)
 ```
 
-The parameter `element` can be a classname or an HTML tag.
+When a name is passed to the `element` parameter, it'll be used
+as a class name for a `<span>`.
+
+```js
+typish(el)
+  .type('Jack', 'name')
+
+<div id='box'><span class='name'>Jack</span></div>
+```
+
+Each `.type()` call creates a new span element.
+
+```js
+typish(el)
+  .type('Jack ', 'name')
+  .type('Sparrow', 'last')
+
+<div id='box'>
+  <span class='name'>Jack </span>
+  <span class='last'>Sparrow</span>
+</div>
+```
+
+The parameter `element` can also be an HTML tag.
 
 ```js
 typish('#box')
   .type('download me', '<a href="download.html">')
+
+<div id='box'>
+  <a href="download.html">download me</a>
+</div>
 ```
 
 ### del()
