@@ -4,13 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "updatedocs": "mdextract -u README.md"
   },
   "author": "Rico Sta. Cruz <hi@ricostacruz.com>",
   "license": "MIT",
   "devDependencies": {
     "chai": "^2.3.0",
     "jsdom": "^5.4.3",
+    "mdextract": "^1.0.0",
     "mocha": "^2.2.5",
     "mocha-jsdom": "^0.4.0"
   }

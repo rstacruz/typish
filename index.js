@@ -8,11 +8,13 @@
   }
 }(this, function () {
 
-  /**
-   * Typish.
+  /***
+   * typish() : typish(element)
+   * Starts typish. `element` may be a DOM element, selector, or a jQuery
+   * object.
    *
-   *   typish('#container')
-   *   typish(el)
+   *     typish('#container')
+   *     typish(el)
    */
 
   function typish(el, options) {
@@ -41,14 +43,15 @@
   typish.defaultSpeed = 50;
 
   /**
+   * type() : type(text, [className, speed])
    * Types some text. If `className` is given, it'll start a new span.
    * You can also give a different `speed` to make it faster or slower.
    *
-   *   typish(el)
-   *     .type('hello')
-   *     .type('hello', 'keyword')
-   *     .type('hello', 10)
-   *     .type('hello', 'keyword', 10)
+   *     typish(el)
+   *       .type('hello')
+   *       .type('hello', 'keyword')
+   *       .type('hello', 10)
+   *       .type('hello', 'keyword', 10)
    */
 
   typish.prototype.type = function (str, className, speed) {
@@ -71,16 +74,123 @@
     }
 
     return this;
-  }
+  };
 
   /**
-   * Queues a command for execution.
+   * del() : del([count, speed])
+   * Deletes characters. if `count` is given, it'll delete that many
+   * characters.  If `speed` is given, that's the speed it'll run on.
    *
-   *   typish(el)
-   *     queue(function (next) {
-   *       this.typeSync('hi');
-   *       setTimeout(next, 100);
-   *     })
+   *     typish('.box')
+   *       .type('hello John')
+   *       .del(4)
+   *       .type('Sherlock')
+   */
+
+  typish.prototype.del = function (n, speed) {
+    if (typeof n === 'undefined') n = 1;
+
+    for (var i = 0; i < n; i++) {
+      this.queue(function (next) {
+        this.delSync();
+        this.defer(next, speed);
+      });
+    }
+
+    return this;
+  };
+
+  /**
+   * wait() : wait([speed])
+   * Waits a while. You may give an optional `speed` argument.
+   *
+   *     typish(el)
+   *       .type('hello')
+   *       .wait()
+   *       .type('there')
+   */
+
+  typish.prototype.wait = function (speed) {
+    return this.queue(function (next) {
+      this.defer(next, speed);
+    });
+  };
+
+  /**
+   * clear() : clear([speed])
+   * Clears the entire thing one letter at a time. To clear everything
+   * instantly, use `.clear(0)`.
+   *
+   *     typish('.box')
+   *       .type('hello.')
+   *       .clear()
+   */
+
+  typish.prototype.clear = function (speed) {
+    var self = this;
+
+    if (speed === 0) {
+      return this.queue(function (next) {
+        this.clearAllSync();
+        next();
+      });
+    }
+
+    return this.queue(function (next) {
+      function bksp() {
+        if (self.length === 0) return next();
+        self.delSync();
+        self.defer(bksp);
+      }
+      bksp();
+    });
+  };
+
+  /**
+   * then() : then(function)
+   * Executes a `function` asynchronously.
+   *
+   *     typish('#box')
+   *       .type('hello')
+   *       .then(popupSomething)
+   *       .wait()
+   *       .type('there')
+   *       .then(popupSomethingAgain)
+   */
+
+  typish.prototype.then = function (fn) {
+    return this.queue(function (next) {
+      fn.apply(this);
+      next();
+    });
+  };
+
+  /**
+   * speed() : speed(ms)
+   * Sets the base speed. All `speed` arguments will be multiplied by this
+   * number.
+   *
+   *     typish(el)
+   *       .speed(50)
+   *       .type('hello')
+   */
+
+  typish.prototype.speed = function (n) {
+    if (typeof n === 'undefined') return this._speed;
+    this._speed = n;
+    return this;
+  };
+
+  /**
+   * queue() : queue(fn(next))
+   * Queues a command for execution. The function `fn` will be invoked, where
+   * the `next` parameter should be ran to move onto the next thing on queue. 
+   *
+   *     typish(el)
+   *       queue(function (next) {
+   *         this.typeSync('hi');
+   *         setTimeout(next, 100);
+   *       })
    */
 
   typish.prototype.queue = function (fn) {
@@ -106,13 +216,14 @@
   };
 
   /**
-   * Waits for `speed` ms, then runs `next`. Useful inside queue().
+   * defer() : defer(next, [speed])
+   * Waits then runs `next`. Useful inside queue().
    *
-   *   typish(el)
-   *     .queue(function (next) {
-   *       //dosomething
-   *       this.defer(next);
-   *     })
+   *     typish(el)
+   *       .queue(function (next) {
+   *         //dosomething
+   *         this.defer(next);
+   *       })
    *
    */
 
@@ -126,106 +237,7 @@
     return this;
   };
 
-  /**
-   * Sets the base speed.
-   *
-   *   typish(el)
-   *     .speed(50)
-   *     .type('hello')
-   */
-
-  typish.prototype.speed = function (n) {
-    if (typeof n === 'undefined') return this._speed;
-    this._speed = n;
-    return this;
-  }
-
   /*
-   * Executes something asynchronously.
-   *
-   *   typish('#box')
-   *     .type('hello')
-   *     .then(popupSomething)
-   *     .wait()
-   *     .type('there')
-   *     .then(popupSomethingAgain)
-   */
-
-  typish.prototype.then = function (fn) {
-    return this.queue(function (next) {
-      fn.apply(this);
-      next();
-    });
-  };
-
-  /**
-   * Waits a while. You may give an optional `speed` argument.
-   *
-   *   typish(el)
-   *     .type('hello')
-   *     .wait()
-   *     .type('there')
-   */
-
-  typish.prototype.wait = function (speed) {
-    return this.queue(function (next) {
-      this.defer(next, speed);
-    });
-  };
-
-  /**
-   * Deletes characters. if `n` is given, it'll delete that many characters.
-   * If `speed` is given, that's the speed it'll run on.
-   *
-   *   typish('.box')
-   *     .type('hello John')
-   *     .del(4)
-   *     .type('Sherlock')
-   */
-
-  typish.prototype.del = function (n, speed) {
-    if (typeof n === 'undefined') n = 1;
-
-    for (var i = 0; i < n; i++) {
-      this.queue(function (next) {
-        this.delSync();
-        this.defer(next, speed);
-      });
-    }
-
-    return this;
-  };
-
-  /**
-   * Clears the entire thing one letter at a time. To clear everything
-   * instantly, use `.clear(0)`.
-   *
-   *   typish('.box')
-   *     .type('hello.')
-   *     .clear()
-   */
-
-  typish.prototype.clear = function (speed) {
-    var self = this;
-
-    if (speed === 0) {
-      return this.queue(function (next) {
-        this.clearAllSync();
-        next();
-      });
-    }
-
-    return this.queue(function (next) {
-      function bksp() {
-        if (self.length === 0) return next();
-        self.delSync();
-        self.defer(bksp);
-      }
-      bksp();
-    });
-  };
-
-  /**
    * Internal: Adds a span (synchronous).
    */
 
@@ -239,7 +251,7 @@
     return this;
   };
 
-  /**
+  /*
    * Internal: Adds a character (synchronous).
    */
 
@@ -280,7 +292,7 @@
     return this;
   };
 
-  /**
+  /*
    * Internal: removes the last span (synchronous).
    */
 
@@ -296,7 +308,7 @@
     return this;
   };
 
-  /**
+  /*
    * Internal: clears everything (synchronous).
    */
 
