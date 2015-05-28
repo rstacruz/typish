@@ -220,4 +220,27 @@ describe('typish', function () {
         next()
       })
   })
+
+  it('type() sets classname', function (next) {
+    setTimeout(function () {
+      expect(t.el.className).include('-typish-typing')
+    }, 50)
+
+    t = typish(div)
+      .speed(20)
+      .type('abcdef')
+      .then(function () {
+        expect(t.el.className).to.eql('')
+        next()
+      })
+  })
+
+  it('type() clears classname', function (next) {
+    t = typish(div)
+      .type('get')
+      .then(function () {
+        expect(t.el.className).to.eql('')
+        next()
+      })
+  })
 })

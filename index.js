@@ -36,6 +36,10 @@
     this._speed = typish.defaultSpeed;
     this.length = 0;
     this.iterations = 0;
+    this.classNames = {
+      typing: '-typish-typing',
+      waiting: '-typish-waiting'
+    }
 
     this.clearAllSync();
   }
@@ -71,8 +75,17 @@
       var letter = letters[i];
       (function (letter, i) {
         this.queue(function (next) {
-          if (i === 0) this.spanSync(className);
+          if (i === 0) {
+            addClass(this.el, this.classNames.typing);
+            this.spanSync(className);
+          }
+
           this.typeSync(letter);
+
+          if (i === len-1) {
+            removeClass(this.el, this.classNames.typing);
+          }
+
           this.defer(next, speed);
         });
       }.bind(this)(letter, i));
@@ -117,7 +130,11 @@
 
   typish.prototype.wait = function (speed) {
     return this.queue(function (next) {
-      this.defer(next, speed);
+      addClass(this.el, this.classNames.waiting);
+      this.defer(function() {
+        removeClass(this.el, this.classNames.waiting);
+        next();
+      }, speed);
     });
   };
 
@@ -332,4 +349,28 @@
   };
 
   return typish;
+
+  function removeClass (el, className) {
+    if (el.classList) {
+      el.classList.remove(className);
+    } else {
+      var expr =
+        new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi');
+
+      el.className = el.className.replace(expr, ' ')
+        .replace(/(^\s*)|(\s*$)/g, '')
+        .replace(/\s{2,}/g, ' ');
+    }
+  }
+
+  function addClass (el, className) {
+    if (el.classList)
+      el.classList.add(className);
+    else {
+      el.className = (el.className + ' ' + className)
+        .replace(/(^\s*)|(\s*$)/g, '')
+        .replace(/\s{2,}/g, ' ');
+    }
+  }
+
 }));
