@@ -239,7 +239,7 @@
    * the `next` parameter should be ran to move onto the next thing on queue. 
    *
    *     typish(el)
-   *       queue(function (next) {
+   *       .queue(function (next) {
    *         this.typeSync('hi');
    *         setTimeout(next, 100);
    *       })
