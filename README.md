@@ -53,8 +53,15 @@ object. This returns a `typish` object that you can run methods on.
 
 ```js
 typish('#container')
+typish($("#box"))
 typish(el)
 ```
+
+A *typish* instance also has the following variables:
+
+- `this.el`: the element
+- `this.length`: how many characters are present at the moment
+- `this.last`: the last `<span>` in the box
 
 ### type()
 > `type(text, [element, speed])`
@@ -104,6 +111,14 @@ typish('#box')
 </div>
 ```
 
+The `speed` argument is multiplied by whatever you set on [speed()].
+Doing `.type('hello', 1/2)` will type a message 2x as fast as normal.
+
+```js
+typish('#box')
+  .type('download me', '<b>', 1/2)
+```
+
 ### del()
 > `del([count, speed])`
 
@@ -117,15 +132,25 @@ typish('.box')
   .type('Sherlock')
 ```
 
+The `speed` argument is multiplied by the time it takes to type one
+character (ie, whatever you set on [speed()]). Doing `.del(10, 1/2)`
+will delete 10 characters 2x as fast as it types.
+
 ### wait()
 > `wait([speed])`
 
-Waits a while. You may give an optional `speed` argument.
+Waits a while. This waits the equivalent of whatever you set in
+`.speed()`, that is, it waits exactly the time it takes to type 1
+character.
+
+The `speed` argument is multiplied by the time it takes to type one
+character (ie, whatever you set on [speed()]). Doing `.wait(10)` pauses
+for the time it takes to type 10 characters.
 
 ```js
 typish(el)
   .type('hello')
-  .wait()
+  .wait(10)
   .type('there')
 ```
 
@@ -140,6 +165,8 @@ typish('.box')
   .type('hello.')
   .clear()
 ```
+
+Also see [type()] for an explanation on the `speed` parameter.
 
 ### then()
 > `then(function)`
@@ -162,9 +189,20 @@ Sets the base speed. All `speed` arguments will be multiplied by this
 number.
 
 ```js
-typish(el)
+typish('.box')
   .speed(50)
   .type('hello')
+```
+
+You can call `speed()` in the middle of an animation to slow it down or
+speed it up.
+
+```js
+typish('.box')
+  .speed(50)
+  .type('hello ')
+  .speed(100)
+  .type('world')
 ```
 
 ### queue()
@@ -176,15 +214,18 @@ the `next` parameter should be ran to move onto the next thing on queue.
 ```js
 typish(el)
   .queue(function (next) {
-    this.typeSync('hi');
+    this.el.className += ' -fade-in';
     setTimeout(next, 100);
   })
 ```
 
+This is used for asynchronous functions. See [then()] if you would like to
+execute something synchronously.
+
 ### defer()
 > `defer(next, [speed])`
 
-Waits then runs `next`. Useful inside queue().
+Waits then runs `next`. Useful inside [queue()].
 
 ```js
 typish(el)
@@ -193,6 +234,8 @@ typish(el)
     this.defer(next);
   })
 ```
+
+See [type()] for an explanation of the `speed` parameter.
 
 <!-- /include -->
 
@@ -236,3 +279,8 @@ Authored and maintained by Rico Sta. Cruz with help from contributors ([list][co
 
 [MIT]: http://mit-license.org/
 [contributors]: http://github.com/rstacruz/typish/contributors
+
+[type()]: #type
+[speed()]: #speed
+[then()]: #then
+[queue()]: #queue
