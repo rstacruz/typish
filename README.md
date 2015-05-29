@@ -214,9 +214,16 @@ for some helpers on getting this to work.
 * [jquery.typer.js](https://github.com/layervault/jquery.typer.js)
     * pro: easier to configure
     * con: jQuery dependency
+    * con: can't configure speed while it types
     * con: doesn't support spans
 * [malarkey](https://github.com/yuanqing/malarkey)
     * pro: smaller footprint in bytes
+    * con: doesn't support spans
+* [typed.js](http://www.mattboldt.com/demos/typed-js/)
+    * pro: easier to setup, just an array of sentences
+    * con: only supports one line
+    * con: can't delete parts of a message
+    * con: can't configure speed while it types
     * con: doesn't support spans
 
 ## Thanks
