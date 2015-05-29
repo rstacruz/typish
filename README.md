@@ -195,6 +195,20 @@ typish(el)
 
 <!-- /include -->
 
+## Blinking cursor
+
+This is optional, and it's done via CSS. Check out [typish.scss](typish.scss)
+for some helpers on getting this to work.
+
+```scss
+@import 'typish';
+.box {
+  @include typish-cursor($color: #a83);
+}
+
+@include typish-keyframes;
+```
+
 ## Similar projects
 
 * [jquery.typer.js](https://github.com/layervault/jquery.typer.js)
