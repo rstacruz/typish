@@ -20,13 +20,14 @@
 // - $left: how much space to offset from the left
 // - $top: how much space to offset from the top
 // - $speed: speed of the blinking in milliseconds
+// - $blinkontype: set to false to disable blinking while typing
 //
 //     .box {
 //       @include typish-code;
 //       @include typish-cursor($color: #7bd, $width: 1px);
 //     }
 
-@mixin typish-cursor($color: #e74c3c, $width: 2px, $height: 1.4em, $left: 5px, $top: 1px, $speed: 500ms) {
+@mixin typish-cursor($color: #e74c3c, $width: 2px, $height: 1.4em, $left: 5px, $top: 1px, $speed: 500ms, $blinkontype: true) {
   &:after {
     content: '';
     display: inline-block;
@@ -37,11 +38,15 @@
     margin-left: $left;
     position: relative;
     top: $top;
-  }
-
-  &.-typish-waiting:after {
     -webkit-animation: typish-blink $speed linear infinite;
     animation: typish-blink $speed linear infinite;
+  }
+
+  @if ($blinkontype != true) {
+    &.-typish-typing:after {
+      -webkit-animation: none;
+      animation: none;
+    }
   }
 
   &.-nocursor:after {

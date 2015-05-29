@@ -24,6 +24,7 @@ test-sass: node_modules
 	@${sass} ".x { @include typish-cursor(\$$color: #c0ffe3); }" "background: #c0ffe3"
 	@${sass} ".x { @include typish-cursor(\$$top: 3px); }" "top: 3px"
 	@${sass} ".x { @include typish-cursor(\$$speed: 890ms); }" "animation: typish-blink 890ms linear"
+	@${sass} ".x { @include typish-cursor(\$$blinkontype: false); }" ".-typish-typing:after"
 
 node_modules:
 	if [ ! -d node_modules ]; then npm install; fi
