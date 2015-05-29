@@ -10,12 +10,14 @@ README.md: index.js node_modules
 	${nom}/mdextract -u README.md
 
 test-sass: node_modules typish.scss
-	@${sass} "@include typish-keyframes;" "10% { opacity: 1; }"
-	@${sass} "@include typish-keyframes;" "40% { opacity: 1; }"
-	@${sass} "@include typish-keyframes;" "50% { opacity: 0; }"
-	@${sass} "@include typish-keyframes(\$$fade: 5%);" "5% { opacity: 1; }"
-	@${sass} "@include typish-keyframes(\$$fade: 5%);" "35% { opacity: 1; }"
-	@${sass} "@include typish-keyframes(\$$fade: 5%);" "40% { opacity: 0; }"
+	@${sass} "@include typish-keyframes;" "0% { opacity: 1; }"
+	@${sass} "@include typish-keyframes;" "30% { opacity: 1; }"
+	@${sass} "@include typish-keyframes;" "40% { opacity: 0; }"
+	@${sass} "@include typish-keyframes(\$$fade: 5%);" "0% { opacity: 1; }"
+	@${sass} "@include typish-keyframes(\$$fade: 5%);" "30% { opacity: 1; }"
+	@${sass} "@include typish-keyframes(\$$fade: 5%);" "35% { opacity: 0; }"
+	@${sass} "@include typish-keyframes(\$$fade: 5%);" "95% { opacity: 0; }"
+	@${sass} "@include typish-keyframes(\$$fade: 5%);" "100% { opacity: 1; }"
 	@${sass} ".x { @include typish-code; }" "white-space: pre-wrap"
 	@${sass} ".x { @include typish-code; }" "white-space: pre-wrap"
 	@${sass} ".x { @include typish-cursor; }" ".x:after"

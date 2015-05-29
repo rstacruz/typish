@@ -60,18 +60,18 @@
 
 @mixin typish-keyframes($duration: 30%, $fade: 10%) {
   @-webkit-keyframes typish-blink {
-    0% { opacity: 0; }
-    #{$fade} { opacity: 1; }
-    #{$fade + $duration} { opacity: 1; }
-    #{2 * $fade + $duration} { opacity: 0; }
-    100% { opacity: 0; }
+    0% { opacity: 1; }
+    #{$duration} { opacity: 1; }
+    #{$fade + $duration} { opacity: 0; }
+    #{100% - $fade} { opacity: 0; }
+    100% { opacity: 1; }
   }
 
   @keyframes typish-blink {
-    0% { opacity: 0; }
-    #{$fade} { opacity: 1; }
-    #{$fade + $duration} { opacity: 1; }
-    #{2 * $fade + $duration} { opacity: 0; }
-    100% { opacity: 0; }
+    0% { opacity: 1; }
+    #{$duration} { opacity: 1; }
+    #{$fade + $duration} { opacity: 0; }
+    #{100% - $fade} { opacity: 0; }
+    100% { opacity: 1; }
   }
 }
