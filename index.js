@@ -212,7 +212,7 @@
       function bksp() {
         if (self.length === 0) return next();
         self.delSync();
-        self.defer(bksp);
+        self.defer(bksp, speed);
       }
       bksp();
     });
