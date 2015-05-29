@@ -314,6 +314,12 @@
    */
 
   typish.prototype.defer = function (next, speed) {
+    // Run synchronously if 0
+    if (speed === 0) {
+      next.call(this);
+      return this;
+    }
+
     if (typeof speed === 'number')
       speed *= this._speed;
     else
