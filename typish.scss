@@ -25,7 +25,7 @@
 //       @include typish-cursor($color: #7bd, $width: 1px);
 //     }
 
-@mixin typish-cursor($color: #e74c3c, $width: 2px, $height: 1.4em, $left: 5px, $top: 1px) {
+@mixin typish-cursor($color: #e74c3c, $width: 2px, $height: 1.4em, $left: 5px, $top: 1px, $speed: 500ms) {
   &:after {
     content: '';
     display: inline-block;
@@ -39,8 +39,8 @@
   }
 
   &.-typish-waiting:after {
-    -webkit-animation: typish-blink 500ms linear infinite;
-    animation: typish-blink 500ms linear infinite;
+    -webkit-animation: typish-blink $speed linear infinite;
+    animation: typish-blink $speed linear infinite;
   }
 
   &.-nocursor:after {

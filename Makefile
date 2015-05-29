@@ -16,10 +16,11 @@ test-sass: node_modules
 	@${sass} ".x { @include typish-code; }" "white-space: pre-wrap"
 	@${sass} ".x { @include typish-code; }" "white-space: pre-wrap"
 	@${sass} ".x { @include typish-cursor; }" ".x:after"
-	@${sass} ".x { @include typish-cursor; }" " animation:"
+	@${sass} ".x { @include typish-cursor; }" " animation: typish-blink 500ms linear infinite"
 	@${sass} ".x { @include typish-cursor; }" " -webkit-animation:"
 	@${sass} ".x { @include typish-cursor(\$$color: #c0ffe3); }" "background: #c0ffe3"
 	@${sass} ".x { @include typish-cursor(\$$top: 3px); }" "top: 3px"
+	@${sass} ".x { @include typish-cursor(\$$speed: 890ms); }" "animation: typish-blink 890ms linear"
 
 node_modules:
 	npm install
