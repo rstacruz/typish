@@ -8,9 +8,7 @@
 //     @include typish-keyframes;
 
 @mixin typish-code {
-  & {
-    white-space: pre-wrap;
-  }
+  white-space: pre-wrap;
 }
 
 // Adds a cursor to a box. Be sure to also include `typish-keyframes`.
