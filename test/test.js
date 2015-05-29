@@ -248,8 +248,9 @@ describe('typish', function () {
     t = typish(div)
       .type('get', 0)
       .then(function () {
-        expect(t.el.innerHTML).eql('<span>get</span>')
-        expect(t.iterations).eql(1)
+        expect(this.el.innerHTML).eql('<span>get</span>')
+        // type + then
+        expect(this.iterations).eql(2)
         next()
       })
   })

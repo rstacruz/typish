@@ -9,7 +9,7 @@ test-js: node_modules
 README.md: index.js node_modules
 	${nom}/mdextract -u README.md
 
-test-sass: node_modules
+test-sass: node_modules typish.scss
 	@${sass} "@include typish-keyframes;" "10% { opacity: 1; }"
 	@${sass} "@include typish-keyframes;" "40% { opacity: 1; }"
 	@${sass} "@include typish-keyframes;" "50% { opacity: 0; }"
