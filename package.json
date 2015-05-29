@@ -11,8 +11,8 @@
   ],
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
-    "updatedocs": "mdextract -u README.md"
+    "test": "make test",
+    "updatedocs": "make -B README.md"
   },
   "author": "Rico Sta. Cruz <hi@ricostacruz.com>",
   "license": "MIT",

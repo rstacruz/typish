@@ -3,8 +3,11 @@ sass := compile_sass() { echo "  $$1 -> $$2"; echo "@import 'typish.scss'; $$1" 
 
 test: test-js test-sass
 
-test-js:
-	npm run test
+test-js: node_modules
+	${nom}/mocha
+
+README.md: index.js node_modules
+	${nom}/mdextract -u README.md
 
 test-sass: node_modules
 	@${sass} "@include typish-keyframes;" "10% { opacity: 1; }"
@@ -23,7 +26,6 @@ test-sass: node_modules
 	@${sass} ".x { @include typish-cursor(\$$speed: 890ms); }" "animation: typish-blink 890ms linear"
 
 node_modules:
-	npm install
+	if [ ! -d node_modules ]; then npm install; fi
 
 .PHONY: test
-
