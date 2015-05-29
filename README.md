@@ -1,7 +1,8 @@
 # typish
 
-Yet another typewriter simulator. This one supports `span`s though for syntax highlighting.<br>
-**[Demo →](http://ricostacruz.com/typish)**
+Yet another typewriter simulator. **[Demo →](http://ricostacruz.com/typish)**
+
+Unlike others like it, typish supports inserting HTML elements. This means you'll be able to do pseudo-syntax highlighting or insert buttons, like below.
 
 ![](https://github.com/rstacruz/typish/blob/gh-pages/screencast.gif)
 
