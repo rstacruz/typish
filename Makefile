@@ -1,7 +1,10 @@
 nom := ./node_modules/.bin
 sass := compile_sass() { echo "  $$1 -> $$2"; echo "@import 'typish.scss'; $$1" | ${nom}/node-sass --output-style compact | grep "$$2" >/dev/null; }; compile_sass
 
-test: test-js test-sass
+test: test-standard test-js test-sass
+
+test-standard:
+	${nom}/standard *.js test/*.js
 
 test-js: node_modules
 	${nom}/mocha
