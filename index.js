@@ -1,8 +1,11 @@
+/* global define */
 ;(function (root, factory) {
-  if (typeof define === 'function' && define.amd) define(factory);
-  else if (typeof exports === 'object') module.exports = factory();
-  else root.typish = factory();
+  if (typeof define === 'function' && define.amd) define(factory)
+  else if (typeof exports === 'object') module.exports = factory()
+  else root.typish = factory()
 }(this, function () {
+
+  var Typish = typish
 
   /***
    * typish() : typish(element)
@@ -20,34 +23,38 @@
    * - `this.last`: the last `<span>` in the box
    */
 
-  function typish(el, options) {
-    if (!(this instanceof typish))
-      return new typish(el, options);
-    
-    if (typeof el === 'string')
-      el = document.querySelector(el);
+  function typish (el, options) {
+    if (!(this instanceof typish)) {
+      return new Typish(el, options)
+    }
 
-    if (el[0] && el[0].nodeName)
-      el = el[0];
-    
-    if (!el)
-      throw new Error("Unknown element");
-    
-    this.el = el;
-    this.stack = [];
-    this.last = null;
-    this._speed = typish.defaultSpeed;
-    this.length = 0;
-    this.iterations = 0;
+    if (typeof el === 'string') {
+      el = document.querySelector(el)
+    }
+
+    if (el[0] && el[0].nodeName) {
+      el = el[0]
+    }
+
+    if (!el) {
+      throw new Error('Unknown element')
+    }
+
+    this.el = el
+    this.stack = []
+    this.last = null
+    this._speed = typish.defaultSpeed
+    this.length = 0
+    this.iterations = 0
     this.classNames = {
       typing: '-typish-typing',
       waiting: '-typish-waiting'
-    };
+    }
 
-    this.clearAllSync();
+    this.clearAllSync()
   }
 
-  typish.defaultSpeed = 50;
+  typish.defaultSpeed = 50
 
   /**
    * type() : type(text, [element, speed])
@@ -97,40 +104,41 @@
 
   typish.prototype.type = function (str, element, speed) {
     if (typeof element === 'number') {
-      speed = element;
-      element = undefined;
+      speed = element
+      element = undefined
     }
 
-    var letters, self = this;
+    var letters, self = this
 
     // optimize: if speed is 0, do it all in one go
-    if (speed === 0)
-      letters = [str];
-    else
-      letters = str.split('');
-
-    for (var i = 0, len = letters.length; i < len; i++) {
-      var letter = letters[i];
-      (function (letter, i) {
-        self.queue(function (next) {
-          if (i === 0) {
-            addClass(self.el, self.classNames.typing);
-            self.spanSync(element);
-          }
-
-          self.typeSync(letter);
-
-          if (i === len-1) {
-            removeClass(self.el, self.classNames.typing);
-          }
-
-          self.defer(next, speed);
-        });
-      }(letter, i));
+    if (speed === 0) {
+      letters = [str]
+    } else {
+      letters = str.split('')
     }
 
-    return this;
-  };
+    for (var i = 0, len = letters.length; i < len; i++) {
+      var letter = letters[i]
+      ;(function (letter, i) {
+        self.queue(function (next) {
+          if (i === 0) {
+            addClass(self.el, self.classNames.typing)
+            self.spanSync(element)
+          }
+
+          self.typeSync(letter)
+
+          if (i === len - 1) {
+            removeClass(self.el, self.classNames.typing)
+          }
+
+          self.defer(next, speed)
+        })
+      }(letter, i))
+    }
+
+    return this
+  }
 
   /**
    * del() : del([count, speed])
@@ -148,17 +156,17 @@
    */
 
   typish.prototype.del = function (n, speed) {
-    if (typeof n === 'undefined') n = 1;
+    if (typeof n === 'undefined') n = 1
 
     for (var i = 0; i < n; i++) {
       this.queue(function (next) {
-        this.delSync();
-        this.defer(next, speed);
-      });
+        this.delSync()
+        this.defer(next, speed)
+      })
     }
 
-    return this;
-  };
+    return this
+  }
 
   /**
    * wait() : wait([speed])
@@ -178,13 +186,13 @@
 
   typish.prototype.wait = function (speed) {
     return this.queue(function (next) {
-      addClass(this.el, this.classNames.waiting);
-      this.defer(function() {
-        removeClass(this.el, this.classNames.waiting);
-        next();
-      }, speed);
-    });
-  };
+      addClass(this.el, this.classNames.waiting)
+      this.defer(function () {
+        removeClass(this.el, this.classNames.waiting)
+        next()
+      }, speed)
+    })
+  }
 
   /**
    * clear() : clear([speed])
@@ -199,24 +207,24 @@
    */
 
   typish.prototype.clear = function (speed) {
-    var self = this;
+    var self = this
 
     if (speed === 0) {
       return this.queue(function (next) {
-        this.clearAllSync();
-        next();
-      });
+        this.clearAllSync()
+        next()
+      })
     }
 
     return this.queue(function (next) {
-      function bksp() {
-        if (self.length === 0) return next();
-        self.delSync();
-        self.defer(bksp, speed);
+      function bksp () {
+        if (self.length === 0) return next()
+        self.delSync()
+        self.defer(bksp, speed)
       }
-      bksp();
-    });
-  };
+      bksp()
+    })
+  }
 
   /**
    * then() : then(function)
@@ -232,10 +240,10 @@
 
   typish.prototype.then = function (fn) {
     return this.queue(function (next) {
-      fn.apply(this);
-      next();
-    });
-  };
+      fn.apply(this)
+      next()
+    })
+  }
 
   /**
    * speed() : speed(ms)
@@ -258,20 +266,20 @@
 
   typish.prototype.speed = function (n) {
     return this.then(function () {
-      this._speed = n;
-      return this;
-    });
-  };
+      this._speed = n
+      return this
+    })
+  }
 
   /**
    * queue() : queue(fn(next))
    * Queues a command for execution. The function `fn` will be invoked, where
-   * the `next` parameter should be ran to move onto the next thing on queue. 
+   * the `next` parameter should be ran to move onto the next thing on queue.
    *
    *     typish(el)
    *       .queue(function (next) {
-   *         this.el.className += ' -fade-in';
-   *         setTimeout(next, 100);
+   *         this.el.className += ' -fade-in'
+   *         setTimeout(next, 100)
    *       })
    *
    * This is used for asynchronous functions. See [then()] if you would like to
@@ -281,24 +289,24 @@
   typish.prototype.queue = function (fn) {
     // Adds a command to the buffer, and executes it if it's
     // the only command to be ran.
-    var self = this;
-    var stack = this.stack;
-    stack.push(fn);
+    var self = this
+    var stack = this.stack
+    stack.push(fn)
     if (stack.length === 1) {
-      this.iterations++;
-      fn.call(self, next);
+      this.iterations++
+      fn.call(self, next)
     }
-    return this;
+    return this
 
     // Moves onto the next command in the buffer.
-    function next() {
-      stack.shift();
+    function next () {
+      stack.shift()
       if (stack.length) {
-        stack[0].call(self, next);
-        self.iterations++;
+        stack[0].call(self, next)
+        self.iterations++
       }
     }
-  };
+  }
 
   /**
    * defer() : defer(next, [speed])
@@ -307,7 +315,7 @@
    *     typish(el)
    *       .queue(function (next) {
    *         //dosomething
-   *         this.defer(next);
+   *         this.defer(next)
    *       })
    *
    * See [type()] for an explanation of the `speed` parameter.
@@ -316,42 +324,44 @@
   typish.prototype.defer = function (next, speed) {
     // Run synchronously if 0
     if (speed === 0) {
-      next.call(this);
-      return this;
+      next.call(this)
+      return this
     }
 
-    if (typeof speed === 'number')
-      speed *= this._speed;
-    else
-      speed = this._speed;
+    if (typeof speed === 'number') {
+      speed *= this._speed
+    } else {
+      speed = this._speed
+    }
 
-    var self = this;
-    setTimeout(function() { next.call(self); }, speed);
-    return this;
-  };
+    var self = this
+    setTimeout(function () { next.call(self) }, speed)
+    return this
+  }
 
   /*
    * Internal: Adds a span (synchronous).
    */
 
   typish.prototype.spanSync = function (element) {
-    var span;
+    var span
 
-    if (element && element.substr(0,1) === '<') {
-      var div = document.createElement('div');
-      div.innerHTML = element;
-      span = div.children[0];
-      if (!span) span = document.createElement('span');
+    if (element && element.substr(0, 1) === '<') {
+      var div = document.createElement('div')
+      div.innerHTML = element
+      span = div.children[0]
+      if (!span) span = document.createElement('span')
     } else {
-      span = document.createElement('span');
-      if (element)
-        span.className = element.replace(/\./, ' ');
+      span = document.createElement('span')
+      if (element) {
+        span.className = element.replace(/\./, ' ')
+      }
     }
 
-    this.el.appendChild(span);
-    this.last = span;
-    return this;
-  };
+    this.el.appendChild(span)
+    this.last = span
+    return this
+  }
 
   /*
    * Internal: Adds a character (synchronous).
@@ -359,89 +369,90 @@
 
   typish.prototype.typeSync = function (ch, className) {
     if (className) {
-      this.spanSync(className);
+      this.spanSync(className)
     } else if (!this.last) {
-      this.spanSync(); 
+      this.spanSync()
     }
 
-    this.length += ch.length;
+    this.length += ch.length
 
     ch = ch
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
-      .replace(/\n/g, '<br>');
+      .replace(/\n/g, '<br>')
 
-    this.last.innerHTML += ch;
-    return this;
-  };
+    this.last.innerHTML += ch
+    return this
+  }
 
   /*
    * Internal: deletes a character (synchronous).
    */
 
   typish.prototype.delSync = function () {
-    if (!this.last) return this;
+    if (!this.last) return this
 
-    this.length--;
+    this.length--
 
-    var str = this.last.innerHTML;
-    if (str.length === 1) return this.popSpanSync();
+    var str = this.last.innerHTML
+    if (str.length === 1) return this.popSpanSync()
 
-    this.last.innerHTML = str.substr(str, str.length - 1);
-    if (str.length === 0) return this.popSpanSync();
+    this.last.innerHTML = str.substr(str, str.length - 1)
+    if (str.length === 0) return this.popSpanSync()
 
-    return this;
-  };
+    return this
+  }
 
   /*
    * Internal: removes the last span (synchronous).
    */
 
   typish.prototype.popSpanSync = function () {
-    if (!this.last) return this;
+    if (!this.last) return this
 
-    this.el.removeChild(this.last);
-    if (this.el.children.length)
-      this.last = this.el.children[this.el.children.length-1];
-    else
-      this.last = undefined;
+    this.el.removeChild(this.last)
+    if (this.el.children.length) {
+      this.last = this.el.children[this.el.children.length - 1]
+    } else {
+      this.last = undefined
+    }
 
-    return this;
-  };
+    return this
+  }
 
   /*
    * Internal: clears everything (synchronous).
    */
 
   typish.prototype.clearAllSync = function () {
-    this.el.innerHTML = '';
-    this.length = 0;
-  };
+    this.el.innerHTML = ''
+    this.length = 0
+  }
 
-  return typish;
+  return typish
 
   function removeClass (el, className) {
     if (el.classList) {
-      el.classList.remove(className);
+      el.classList.remove(className)
     } else {
       var expr =
-        new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi');
+        new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi')
 
       el.className = el.className.replace(expr, ' ')
         .replace(/(^\s*)|(\s*$)/g, '')
-        .replace(/\s{2,}/g, ' ');
+        .replace(/\s{2,}/g, ' ')
     }
   }
 
   function addClass (el, className) {
-    if (el.classList)
-      el.classList.add(className);
-    else {
+    if (el.classList) {
+      el.classList.add(className)
+    } else {
       el.className = (el.className + ' ' + className)
         .replace(/(^\s*)|(\s*$)/g, '')
-        .replace(/\s{2,}/g, ' ');
+        .replace(/\s{2,}/g, ' ')
     }
   }
 
-}));
+}))
