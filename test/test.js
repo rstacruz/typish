@@ -1,3 +1,4 @@
+/* global describe, it, beforeEach */
 var expect = require('chai').expect
 require('mocha-jsdom')()
 
@@ -61,8 +62,8 @@ describe('typish', function () {
       .typeSync('v')
       .delSync()
 
-    expect(t.el.innerHTML).eql('');
-    expect(t.last).undefined;
+    expect(t.el.innerHTML).eql('')
+    expect(t.last).undefined
 
     t.typeSync('k')
 
@@ -133,8 +134,8 @@ describe('typish', function () {
       .type('yo', 'keyword')
       .then(function () {
         expect(t.el.innerHTML).eql('<span>hi</span><span class="keyword">yo</span>')
-        next();
-      });
+        next()
+      })
   })
 
   it('del()', function (next) {
@@ -144,9 +145,9 @@ describe('typish', function () {
       .del(2)
       .then(function () {
         expect(t.el.innerHTML).eql('<span>va</span>')
-        expect(t.iterations).eql(6);
-        next();
-      });
+        expect(t.iterations).eql(6)
+        next()
+      })
   })
 
   it('length', function () {
@@ -155,7 +156,7 @@ describe('typish', function () {
       .spanSync()
       .typeSync('=')
 
-    expect(t.length).eql(4);
+    expect(t.length).eql(4)
   })
 
   it('clear()', function (next) {
@@ -164,9 +165,9 @@ describe('typish', function () {
       .type('=')
       .clear()
       .then(function () {
-        expect(t.el.innerHTML).eql('');
-        next();
-      });
+        expect(t.el.innerHTML).eql('')
+        next()
+      })
   })
 
   it('clear() and type after', function (next) {
@@ -176,9 +177,9 @@ describe('typish', function () {
       .clear()
       .type('k')
       .then(function () {
-        expect(t.el.innerHTML).eql('<span>k</span>');
-        next();
-      });
+        expect(t.el.innerHTML).eql('<span>k</span>')
+        next()
+      })
   })
 
   it('clear() with speed = 0', function (next) {
@@ -189,9 +190,9 @@ describe('typish', function () {
       .typeSync('=')
       .clear(0)
       .then(function () {
-        expect(t.el.innerHTML).eql('');
-        next();
-      });
+        expect(t.el.innerHTML).eql('')
+        next()
+      })
   })
 
   it('speed()', function (next) {
@@ -199,8 +200,8 @@ describe('typish', function () {
       .speed(0)
       .type('var')
       .then(function () {
-        next();
-      });
+        next()
+      })
   })
 
   it('type() html tags', function (next) {
