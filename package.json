@@ -11,7 +11,7 @@
     "jsdom": "^5.4.3",
     "mdextract": "^1.0.0",
     "mocha": "^2.2.5",
-    "mocha-jsdom": "^0.4.0",
+    "mocha-jsdom": "^1.0.0",
     "mocha-standard": "^1.0.0",
     "node-sass": "^3.1.2",
     "standard": "^4.3.1"
@@ -38,4 +38,15 @@
     "test-all": "make test",
     "updatedocs": "make -B README.md"
   },
+  "testling": {
+    "harness": "mocha",
+    "files": "test/test.js",
+    "browsers": [
+      "ie/6..latest",
+      "chrome/latest",
+      "firefox/latest",
+      "safari/latest",
+      "iphone/6"
+    ]
+  }
 }
