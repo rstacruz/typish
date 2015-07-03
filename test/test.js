@@ -1,13 +1,10 @@
 /* global describe, it, beforeEach */
-var expect = require('chai').expect
-require('mocha-jsdom')()
-
-var typish, div, t
+require('./setup') /* global typish, expect */
 
 describe('typish', function () {
+  var div, t
 
   beforeEach(function () {
-    typish = require('../index')
     typish.defaultSpeed = 1
     div = document.createElement('div')
     t = undefined
