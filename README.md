@@ -214,8 +214,8 @@ the `next` parameter should be ran to move onto the next thing on queue.
 ```js
 typish(el)
   .queue(function (next) {
-    this.el.className += ' -fade-in';
-    setTimeout(next, 100);
+    this.el.className += ' -fade-in'
+    setTimeout(next, 100)
   })
 ```
 
@@ -231,7 +231,7 @@ Waits then runs `next`. Useful inside [queue()].
 typish(el)
   .queue(function (next) {
     //dosomething
-    this.defer(next);
+    this.defer(next)
   })
 ```
 
