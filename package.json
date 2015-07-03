@@ -23,6 +23,7 @@
     "mdextract": "^1.0.0",
     "mocha": "^2.2.5",
     "mocha-jsdom": "^0.4.0",
+    "mocha-standard": "^1.0.0",
     "node-sass": "^3.1.2",
     "standard": "^4.3.1"
   },
