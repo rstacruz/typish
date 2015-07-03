@@ -1,22 +1,11 @@
 {
   "name": "typish",
-  "version": "0.2.2",
   "description": "Typewriter simulator",
-  "keywords": [
-    "typewriter",
-    "type",
-    "anmiate",
-    "text",
-    "terminal"
-  ],
-  "main": "index.js",
-  "scripts": {
-    "test": "mocha",
-    "test-all": "make test",
-    "updatedocs": "make -B README.md"
-  },
+  "version": "0.2.2",
   "author": "Rico Sta. Cruz <hi@ricostacruz.com>",
-  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rstacruz/typish/issues"
+  },
   "devDependencies": {
     "chai": "^2.3.0",
     "jsdom": "^5.4.3",
@@ -30,12 +19,23 @@
   "directories": {
     "test": "test"
   },
+  "homepage": "https://github.com/rstacruz/typish#readme",
+  "keywords": [
+    "anmiate",
+    "terminal",
+    "text",
+    "type",
+    "typewriter"
+  ],
+  "license": "MIT",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rstacruz/typish.git"
   },
-  "bugs": {
-    "url": "https://github.com/rstacruz/typish/issues"
+  "scripts": {
+    "test": "mocha",
+    "test-all": "make test",
+    "updatedocs": "make -B README.md"
   },
-  "homepage": "https://github.com/rstacruz/typish#readme"
 }
