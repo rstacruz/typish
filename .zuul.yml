@@ -1,0 +1,8 @@
+ui: mocha-bdd
+browsers:
+  - name: chrome
+    version: latest
+  - name: ie
+    version: 6..latest
+  - name: firefox
+    version: latest

@@ -15,7 +15,7 @@ describe('typish', function () {
       .spanSync('keyword')
       .typeSync('var x')
 
-    expect(t.el.innerHTML).eql(
+    expect(t.el.innerHTML).toEqual(
       '<span class="keyword">var x</span>')
   })
 
@@ -23,7 +23,7 @@ describe('typish', function () {
     t = typish(div)
       .typeSync('var x')
 
-    expect(t.el.innerHTML).eql(
+    expect(t.el.innerHTML).toEqual(
       '<span>var x</span>')
   })
 
@@ -31,7 +31,7 @@ describe('typish', function () {
     t = typish(div)
       .typeSync('var <x>')
 
-    expect(t.el.innerHTML).eql(
+    expect(t.el.innerHTML).toEqual(
       '<span>var &lt;x&gt;</span>')
   })
 
@@ -39,8 +39,8 @@ describe('typish', function () {
     t = typish(div)
       .typeSync('a\nb')
 
-    expect(t.el.innerHTML).eql('<span>a<br>b</span>')
-    expect(t.length).eql(3)
+    expect(t.el.innerHTML).toEqual('<span>a<br>b</span>')
+    expect(t.length).toEqual(3)
   })
 
   it('delSync() once', function () {
@@ -50,7 +50,7 @@ describe('typish', function () {
       .delSync()
       .delSync()
 
-    expect(t.el.innerHTML).eql(
+    expect(t.el.innerHTML).toEqual(
       '<span class="keyword">var</span>')
   })
 
@@ -59,12 +59,12 @@ describe('typish', function () {
       .typeSync('v')
       .delSync()
 
-    expect(t.el.innerHTML).eql('')
+    expect(t.el.innerHTML).toEqual('')
     expect(t.last).undefined
 
     t.typeSync('k')
 
-    expect(t.el.innerHTML).eql(
+    expect(t.el.innerHTML).toEqual(
       '<span>k</span>')
   })
 
@@ -75,7 +75,7 @@ describe('typish', function () {
       .spanSync('op')
       .typeSync('= y')
 
-    expect(t.el.innerHTML).eql(
+    expect(t.el.innerHTML).toEqual(
       '<span class="keyword">var x</span><span class="op">= y</span>')
   })
 
@@ -90,7 +90,7 @@ describe('typish', function () {
       .delSync()
       .delSync()
 
-    expect(t.el.innerHTML).eql(
+    expect(t.el.innerHTML).toEqual(
       '<span class="keyword">var</span>')
   })
 
@@ -98,7 +98,7 @@ describe('typish', function () {
     t = typish(div)
       .typeSync('var x')
 
-    expect(t.el.innerHTML).eql(
+    expect(t.el.innerHTML).toEqual(
       '<span>var x</span>')
   })
 
@@ -106,18 +106,18 @@ describe('typish', function () {
     t = typish(div)
       .delSync()
 
-    expect(t.el.innerHTML).eql('')
+    expect(t.el.innerHTML).toEqual('')
   })
 
   it('type()', function (next) {
     t = typish(div)
       .type('hi')
       .then(function () {
-        expect(t.el.innerHTML).eql('<span>hi</span>')
+        expect(t.el.innerHTML).toEqual('<span>hi</span>')
       })
       .type('yo')
       .then(function () {
-        expect(t.el.innerHTML).eql('<span>hi</span><span>yo</span>')
+        expect(t.el.innerHTML).toEqual('<span>hi</span><span>yo</span>')
         next()
       })
   })
@@ -126,11 +126,11 @@ describe('typish', function () {
     t = typish(div)
       .type('hi')
       .then(function () {
-        expect(t.el.innerHTML).eql('<span>hi</span>')
+        expect(t.el.innerHTML).toEqual('<span>hi</span>')
       })
       .type('yo', 'keyword')
       .then(function () {
-        expect(t.el.innerHTML).eql('<span>hi</span><span class="keyword">yo</span>')
+        expect(t.el.innerHTML).toEqual('<span>hi</span><span class="keyword">yo</span>')
         next()
       })
   })
@@ -141,8 +141,8 @@ describe('typish', function () {
       .type('=')
       .del(2)
       .then(function () {
-        expect(t.el.innerHTML).eql('<span>va</span>')
-        expect(t.iterations).eql(6)
+        expect(t.el.innerHTML).toEqual('<span>va</span>')
+        expect(t.iterations).toEqual(6)
         next()
       })
   })
@@ -153,7 +153,7 @@ describe('typish', function () {
       .spanSync()
       .typeSync('=')
 
-    expect(t.length).eql(4)
+    expect(t.length).toEqual(4)
   })
 
   it('clear()', function (next) {
@@ -162,7 +162,7 @@ describe('typish', function () {
       .type('=')
       .clear()
       .then(function () {
-        expect(t.el.innerHTML).eql('')
+        expect(t.el.innerHTML).toEqual('')
         next()
       })
   })
@@ -174,7 +174,7 @@ describe('typish', function () {
       .clear()
       .type('k')
       .then(function () {
-        expect(t.el.innerHTML).eql('<span>k</span>')
+        expect(t.el.innerHTML).toEqual('<span>k</span>')
         next()
       })
   })
@@ -187,7 +187,7 @@ describe('typish', function () {
       .typeSync('=')
       .clear(0)
       .then(function () {
-        expect(t.el.innerHTML).eql('')
+        expect(t.el.innerHTML).toEqual('')
         next()
       })
   })
@@ -205,7 +205,7 @@ describe('typish', function () {
     t = typish(div)
       .type('get', '<a href="download.html">')
       .then(function () {
-        expect(t.el.innerHTML).to.eql('<a href="download.html">get</a>')
+        expect(t.el.innerHTML).toEqual('<a href="download.html">get</a>')
         next()
       })
   })
@@ -214,21 +214,21 @@ describe('typish', function () {
     t = typish(div)
       .type('get', '<')
       .then(function () {
-        expect(t.el.innerHTML).to.eql('<span>get</span>')
+        expect(t.el.innerHTML).toEqual('<span>get</span>')
         next()
       })
   })
 
   it('type() sets classname', function (next) {
     setTimeout(function () {
-      expect(t.el.className).include('-typish-typing')
+      expect(t.el.className).toInclude('-typish-typing')
     }, 50)
 
     t = typish(div)
       .speed(20)
       .type('abcdef')
       .then(function () {
-        expect(t.el.className).to.eql('')
+        expect(t.el.className).toEqual('')
         next()
       })
   })
@@ -237,7 +237,7 @@ describe('typish', function () {
     t = typish(div)
       .type('get')
       .then(function () {
-        expect(t.el.className).to.eql('')
+        expect(t.el.className).toEqual('')
         next()
       })
   })
@@ -246,9 +246,9 @@ describe('typish', function () {
     t = typish(div)
       .type('get', 0)
       .then(function () {
-        expect(this.el.innerHTML).eql('<span>get</span>')
+        expect(this.el.innerHTML).toEqual('<span>get</span>')
         // type + then
-        expect(this.iterations).eql(2)
+        expect(this.iterations).toEqual(2)
         next()
       })
   })
