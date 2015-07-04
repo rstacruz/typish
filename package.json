@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "expect": "^1.6.0",
+    "expect-html-equal": "^1.0.0",
     "jsdom": "^5.4.3",
     "mdextract": "^1.0.0",
     "mocha": "^2.2.5",
