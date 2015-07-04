@@ -1,3 +1,4 @@
+/* eslint-disable spaced-comment */
 /* global define */
 ;(function (root, factory) {
   if (typeof define === 'function' && define.amd) define(factory)
@@ -108,7 +109,8 @@
       element = undefined
     }
 
-    var letters, self = this
+    var letters
+    var self = this
 
     // optimize: if speed is 0, do it all in one go
     if (speed === 0) {

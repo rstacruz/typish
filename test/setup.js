@@ -5,6 +5,6 @@ if (typeof process === 'object') {
   require('mocha-jsdom')()
 } else {
   if (typeof global === 'undefined') window.global = window
-  window.require = function () { /*noop*/ }
+  window.require = function () { /* noop */ }
 }
 
