@@ -9,6 +9,7 @@
   "devDependencies": {
     "expect": "^1.6.0",
     "expect-html-equal": "^1.0.0",
+    "istanbul": "^0.3.17",
     "jsdom": "^5.4.3",
     "mdextract": "^1.0.0",
     "mocha": "^2.2.5",
@@ -37,6 +38,7 @@
   "scripts": {
     "test": "mocha",
     "test-all": "make test",
+    "coverage": "istanbul cover _mocha && istanbul report html && ls coverage",
     "updatedocs": "make -B README.md"
   },
   "testling": {

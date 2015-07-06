@@ -1,15 +1,16 @@
-/* global describe, it, beforeEach */
+/* global describe, it, beforeEach, afterEach */
+/* jshint expr: true */
+
 require('./setup') /* global typish, expect */
+var div, t
+
+beforeEach(function () {
+  typish.defaultSpeed = 1
+  div = document.createElement('div')
+  t = undefined
+})
 
 describe('typish', function () {
-  var div, t
-
-  beforeEach(function () {
-    typish.defaultSpeed = 1
-    div = document.createElement('div')
-    t = undefined
-  })
-
   it('typeSync()', function () {
     t = typish(div)
       .spanSync('keyword')
@@ -43,6 +44,13 @@ describe('typish', function () {
     expect(t.length).toHtmlEqual(3)
   })
 
+  it('typeSync() with classname', function () {
+    t = typish(div)
+      .typeSync('a', 'highlight')
+
+    expect(t.el.innerHTML).toHtmlEqual('<span class="highlight">a</span>')
+  })
+
   it('delSync() once', function () {
     t = typish(div)
       .spanSync('keyword')
@@ -52,6 +60,24 @@ describe('typish', function () {
 
     expect(t.el.innerHTML).toHtmlEqual(
       '<span class="keyword">var</span>')
+  })
+
+  it('delSync() an entire span', function () {
+    t = typish(div)
+      .typeSync('abc')
+      .typeSync('d')
+      .delSync()
+
+    expect(t.el.innerHTML).toHtmlEqual(
+      '<span>abc</span>')
+  })
+
+  it('delSync() last character', function () {
+    t = typish(div)
+      .typeSync('d')
+      .delSync()
+
+    expect(t.el.innerHTML).toHtmlEqual('')
   })
 
   it('delSync() then type after', function () {
@@ -79,7 +105,7 @@ describe('typish', function () {
       '<span class="keyword">var x</span><span class="op">= y</span>')
   })
 
-  it('del multiple', function () {
+  it('delSync() multiple', function () {
     t = typish(div)
       .spanSync('keyword')
       .typeSync('var x')
@@ -143,6 +169,28 @@ describe('typish', function () {
       .then(function () {
         expect(t.el.innerHTML).toHtmlEqual('<span>va</span>')
         expect(t.iterations).toHtmlEqual(6)
+        next()
+      })
+  })
+
+  it('del() default args', function (next) {
+    t = typish(div)
+      .type('var')
+      .del()
+      .then(function () {
+        expect(t.el.innerHTML).toHtmlEqual('<span>va</span>')
+        next()
+      })
+  })
+
+  it('wait()', function (next) {
+    t = typish(div)
+      .type('var')
+      .wait()
+      .type('=')
+      .then(function () {
+        expect(t.el.innerHTML).toHtmlEqual('<span>var</span><span>=</span>')
+        expect(t.el.className).toEqual('')
         next()
       })
   })
@@ -250,3 +298,28 @@ describe('typish', function () {
       })
   })
 })
+
+describe('invocation', function () {
+  it('as a selector', function () {
+    div.className = 'typish-container'
+    document.body.appendChild(div)
+    t = typish('.typish-container')
+    expect(t.el).toBe(div)
+  })
+
+  it('as a jQuery object', function () {
+    t = typish([div])
+    expect(t.el).toBe(div)
+  })
+
+  it('unknown element', function () {
+    expect(function () {
+      t = typish('.non-existent-element')
+    }).toThrow(/Unknown element/i)
+  })
+
+  afterEach(function () {
+    div && div.parentNode && div.parentNode.removeChild(div)
+  })
+})
+

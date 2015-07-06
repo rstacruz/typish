@@ -33,7 +33,7 @@
       el = document.querySelector(el)
     }
 
-    if (el[0] && el[0].nodeName) {
+    if (el && el[0] && el[0].nodeName) {
       el = el[0]
     }
 
