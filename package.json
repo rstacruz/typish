@@ -38,7 +38,7 @@
   "scripts": {
     "test": "mocha",
     "test-all": "make test",
-    "coverage": "istanbul cover _mocha && istanbul report html && ls coverage",
+    "coverage": "istanbul cover _mocha",
     "updatedocs": "make -B README.md"
   },
   "testling": {
