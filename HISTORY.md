@@ -1,3 +1,10 @@
+## [v0.2.3]
+> Jan 21, 2016
+
+- Publish to bower, no functional changes.
+
+[v0.2.3]: https://github.com/rstacruz/typish/compare/v0.2.2...v0.2.3
+
 ## [v0.2.2] - May 29, 2015
 
 * Fix `.clear()` not honoring speed arguments.
