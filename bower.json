@@ -1,0 +1,23 @@
+{
+  "name": "typish",
+  "authors": [
+    "Rico Sta. Cruz <rstacruz@users.noreply.github.com>"
+  ],
+  "homepage": "https://github.com/rstacruz/typish",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "keywords": [
+    "anmiate",
+    "terminal",
+    "text",
+    "type",
+    "typewriter"
+  ],
+  "license": "MIT",
+  "main": "index.js"
+}
